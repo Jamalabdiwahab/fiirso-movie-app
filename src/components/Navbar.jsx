@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { Search, X, LoaderCircle, Star } from "lucide-react";
+import { Search, X, LoaderCircle, Star, Menu } from "lucide-react";
 import { searchMoviesAndTV } from "../services/tmdb";
 
 const IMAGE = "https://image.tmdb.org/t/p/w185";
@@ -12,6 +12,14 @@ const Navbar = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navLinks = [
+    { label: "Home", to: "/" },
+    { label: "Movies", to: "/movies" },
+    { label: "TV Shows", to: "/tv-shows" },
+    { label: "Trending", to: "/#trending-movies" },
+  ];
 
   useEffect(() => {
     const trimmedQuery = query.trim();
@@ -69,40 +77,87 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="absolute inset-x-0 top-0 z-30">
-        <nav className="mx-auto flex max-w-350 items-center justify-between gap-4 px-5 py-5 md:px-10">
-          <Link to="/" className="flex shrink-0 items-center gap-2">
-            <img src="/logo.svg" alt="FiirsoApp" className="h-10 w-10" />
-            <h1 className="text-xl font-extrabold tracking-tight text-main-text">
-              Fiirso<span className="text-primary-accent">App</span>
-            </h1>
-          </Link>
+ <header className="absolute inset-x-0 top-0 z-30">
+  <nav className="mx-auto flex max-w-350 items-center justify-between gap-4 px-5 py-5 md:px-10">
+    <Link to="/" className="flex shrink-0 items-center gap-2">
+      <img src="/logo.svg" alt="FiirsoApp" className="h-10 w-10" />
+      <h1 className="text-xl font-extrabold tracking-tight text-main-text">
+        Fiirso<span className="text-primary-accent">App</span>
+      </h1>
+    </Link>
 
-          <div className="hidden items-center gap-6 text-sm tracking-wider text-secondary-text md:flex">
-            <Link to="/" className="transition hover:text-primary-accent">
-              Home
-            </Link>
-            <Link to="/movies" className="transition hover:text-primary-accent">
-              Movies
-            </Link>
-            <Link to="/tv-shows" className="transition hover:text-primary-accent">
-              TV Shows
-            </Link>
-            <Link to="/#trending-movies" className="transition hover:text-primary-accent">
-              Trending
-            </Link>
-          </div>
+    {/* Desktop links */}
+    <div className="hidden items-center gap-6 text-sm tracking-wider text-secondary-text md:flex">
+      {navLinks.map((link) => (
+        <Link
+          key={link.label}
+          to={link.to}
+          className="transition hover:text-primary-accent"
+        >
+          {link.label}
+        </Link>
+      ))}
+    </div>
 
-          <button
-            type="button"
-            aria-label="Search movies and TV shows"
-            onClick={() => setSearchOpen(true)}
-            className="rounded-full p-2 text-main-text transition hover:bg-white/10 hover:text-primary-accent"
+    <div className="flex items-center gap-1">
+      <button
+        type="button"
+        aria-label="Search movies and TV shows"
+        onClick={() => {
+          setMenuOpen(false);
+          setSearchOpen(true);
+        }}
+        className="rounded-full p-2 text-main-text transition hover:bg-white/10 hover:text-primary-accent"
+      >
+        <Search size={23} />
+      </button>
+
+      {/* Mobile menu button */}
+      <button
+        type="button"
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((open) => !open)}
+        className="rounded-full p-2 text-main-text transition hover:bg-white/10 hover:text-primary-accent md:hidden"
+      >
+        {menuOpen ? <X size={25} /> : <Menu size={25} />}
+      </button>
+    </div>
+  </nav>
+
+{/* Mobile menu panel */}
+<div
+  className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out md:hidden ${
+    menuOpen
+      ? "grid-rows-[1fr] opacity-100"
+      : "pointer-events-none grid-rows-[0fr] opacity-0"
+  }`}
+  aria-hidden={!menuOpen}
+>
+  <div className="overflow-hidden">
+    <div className="mx-4 mt-1 rounded-2xl border border-borders bg-main-background/90 px-5 py-2 shadow-2xl shadow-black/50 backdrop-blur-xl">
+      <div className="flex flex-col">
+        {navLinks.map((link, index) => (
+          <Link
+            key={link.label}
+            to={link.to}
+            tabIndex={menuOpen ? 0 : -1}
+            onClick={() => setMenuOpen(false)}
+            style={{ transitionDelay: menuOpen ? `${index * 50 + 100}ms` : "0ms" }}
+            className={`border-b border-borders/60 py-3.5 text-base font-medium text-main-text transition-all duration-300 last:border-b-0 hover:pl-2 hover:text-primary-accent ${
+              menuOpen
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-2 opacity-0"
+            }`}
           >
-            <Search size={23} />
-          </button>
-        </nav>
-      </header>
+            {link.label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+</header>
 
       {searchOpen && (
         <div

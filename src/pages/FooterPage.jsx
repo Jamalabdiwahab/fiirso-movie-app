@@ -16,7 +16,12 @@ const FooterPage = () => {
                 Fiirso<span className="text-primary-accent">App</span>
             </h1>
         </Link>
-        <p className="mt-2">Movie information and authorized viewing options coming soon.</p>
+        <p className="mt-2">
+           Discover movies and TV shows, explore ratings and details, and find your next favorite watch.
+        </p>
+        <p className="mt-4 text-xs">
+           &copy; {new Date().getFullYear()} FiirsoApp. All rights reserved.
+        </p>
     </footer>
   )
 }
