@@ -1,16 +1,108 @@
-# React + Vite
+# FiirsoApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A movie and TV show discovery site built with React. Browse what's popular and trending, search across movies and series, and open a detail page for any title. Data comes from the TMDB API.
 
-Currently, two official plugins are available:
+<!-- Add a screenshot or two here once you have them:
+![Home page](./screenshots/home.png)
+-->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Hero carousel on the home page with the featured titles
+- Horizontal rows for popular movies, popular TV shows and trending titles, swipeable on mobile
+- Separate Movies and TV Shows pages
+- Detail pages for every movie and series (`/movie/:id`, `/tv/:id`)
+- Live search that queries movies and TV shows together, with a short debounce so it doesn't fire on every keystroke
+- Responsive layout with a mobile menu
+- Cards without a poster are skipped instead of showing broken images
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech stack
 
-## Expanding the ESLint configuration
+| Area | Tools |
+| --- | --- |
+| UI | React |
+| Build tool | Vite |
+| Styling | Tailwind CSS v4 |
+| Routing | React Router |
+| Icons | lucide-react |
+| Data | TMDB API |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting started
+
+You'll need Node.js 18 or newer and a free TMDB API key from [themoviedb.org](https://www.themoviedb.org/settings/api).
+
+```bash
+git clone https://github.com/Jamalabdiwahab/fiirso-web.git
+cd fiirso-web
+npm install
+```
+
+Create a `.env` file in the project root:
+
+```env
+VITE_TMDB_API_KEY=your_key_here
+```
+
+Then start the dev server:
+
+```bash
+npm run dev
+```
+
+The app runs at `http://localhost:5173`.
+
+## Project structure
+
+```
+src/
+  components/    Navbar, hero, movie rows, cards, footer
+  pages/         Home, Movies, TV Shows, detail pages
+  services/      TMDB API calls
+public/          Logo and static files
+```
+
+## Testing on your phone
+
+Two ways to open the dev server on a real device.
+
+**Same Wi-Fi:**
+
+```bash
+npm run dev -- --host
+```
+
+Open the `Network` address Vite prints (something like `http://192.168.x.x:5173`) on your phone.
+
+**Cloudflare quick tunnel**, which works from anywhere:
+
+```bash
+cloudflared tunnel --url http://localhost:5173
+```
+
+Vite blocks unknown hosts by default, so allow the tunnel domain in `vite.config.js`:
+
+```js
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  server: {
+    allowedHosts: [".trycloudflare.com"],
+  },
+});
+```
+
+The tunnel URL changes every time you restart `cloudflared`.
+
+## Build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Credits
+
+This product uses the TMDB API but is not endorsed or certified by TMDB. All movie and TV data and images belong to their respective owners.
+
+## Author
+
+Jamal, [@Jamalabdiwahab](https://github.com/Jamalabdiwahab)
