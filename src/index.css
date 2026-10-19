@@ -1,3 +1,69 @@
+
 @import "tailwindcss";
 
+html { scroll-behavior: smooth; }
 
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #DC2626; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #B91C1C; }
+
+@theme {
+  --color-main-background: #0B0B0F;
+  --color-secondary-background: #141419;
+  --color-cards-panels: #1F1F26;
+  --color-primary-accent: #E50914;
+  --color-hover-accent: #B91C1C;
+  --color-main-text: #F9FAFB;
+  --color-secondary-text: #A1A1AA;
+  --color-borders: #2E2E38;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: #0B0B0F;
+}
+
+body {
+  margin: 0;
+}
+
+/* Smooth entrance for each hero slide */
+@keyframes hero-image-enter {
+  from {
+    opacity: 0.45;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-image {
+  animation: hero-image-enter 1.2s ease-out both;
+}
+
+.animate-hero-content {
+  animation: hero-content-enter 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-image,
+  .animate-hero-content {
+    animation: none;
+  }
+}
