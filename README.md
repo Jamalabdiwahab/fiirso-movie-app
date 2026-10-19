@@ -61,44 +61,6 @@ src/
 public/          Logo and static files
 ```
 
-## Testing on your phone
-
-Two ways to open the dev server on a real device.
-
-**Same Wi-Fi:**
-
-```bash
-npm run dev -- --host
-```
-
-Open the `Network` address Vite prints (something like `http://192.168.x.x:5173`) on your phone.
-
-**Cloudflare quick tunnel**, which works from anywhere:
-
-```bash
-cloudflared tunnel --url http://localhost:5173
-```
-
-Vite blocks unknown hosts by default, so allow the tunnel domain in `vite.config.js`:
-
-```js
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  server: {
-    allowedHosts: [".trycloudflare.com"],
-  },
-});
-```
-
-The tunnel URL changes every time you restart `cloudflared`.
-
-## Build
-
-```bash
-npm run build
-npm run preview
-```
-
 ## Credits
 
 This product uses the TMDB API but is not endorsed or certified by TMDB. All movie and TV data and images belong to their respective owners.
